@@ -1,0 +1,10 @@
+Flask==3.0.2
+gunicorn==21.2.0
+# Pre-pin numpy so pandas doesn't try to build from source
+numpy==2.0.1
+pandas==2.2.2
+# ReportLab wheels (avoid building with freetype)
+reportlab==4.2.0
+# Helpers (ensure metadata build works cleanly)
+setuptools>=69.0.0
+wheel>=0.42.0
