@@ -1,0 +1,110 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CAS Story Generator</title>
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; max-width: 840px; margin: 40px auto; }
+      h1 { font-size: 28px; }
+      label { display: block; margin-top: 12px; font-weight: 600; }
+      input, select, textarea { width: 100%; padding: 8px; margin-top: 6px; }
+      button { margin-top: 18px; padding: 10px 16px; font-size: 16px; }
+      .hint { color: #555; font-size: 12px; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+      .row { display: contents; }
+      .subtle { font-size: 12px; color: #666; margin-top: 4px; }
+      .box { border: 1px solid #ddd; padding: 12px; margin-top: 14px; border-radius: 8px; }
+    </style>
+  </head>
+  <body>
+    <h1>CAS Story Generator</h1>
+    <form method="POST" action="/generate" enctype="multipart/form-data">
+      <label>Story Title
+        <input name="title" value="Cookie Game — Custom Story" />
+      </label>
+      <label>Practice Mode
+        <select name="mode">
+          <option value="mixed">Mixed (use all targets each page)</option>
+          <option value="blocked">Blocked (rotate one target per page)</option>
+        </select>
+      </label>
+      <label>Theme
+        <select name="theme">
+          <option value="cookies" selected>Cookies</option>
+          <option value="park">Park</option>
+          <option value="pets">Pets</option>
+          <option value="space">Space</option>
+          <option value="farm">Farm</option>
+        </select>
+        <div class="hint">Sets the illustration placeholders on each page.</div>
+      </label>
+      <label>Pages
+        <input name="pages" type="number" min="6" max="14" value="10" />
+      </label>
+      <label>Core Phrases (comma-separated)
+        <input name="phrases" value="I want a cookie,I go,You go,Out" />
+        <div class="hint">Tip: keep phrases short and repeatable.</div>
+      </label>
+
+      <div class="box">
+        <div><strong>Targets</strong> <span class="subtle">(phoneme, position, reps per page)</span></div>
+        <div class="grid">
+          <div><em>Phoneme</em></div><div><em>Position</em></div><div><em>Reps / page</em></div>
+          <div class="row">
+            <input name="t1_phoneme" placeholder="e.g., w" value="w" />
+            <select name="t1_position"><option>initial</option><option>medial</option><option>final</option></select>
+            <input name="t1_reps" type="number" min="0" max="10" value="4" />
+          </div>
+          <div class="row">
+            <input name="t2_phoneme" placeholder="e.g., k" value="k" />
+            <select name="t2_position"><option>initial</option><option>medial</option><option selected>final</option></select>
+            <input name="t2_reps" type="number" min="0" max="10" value="3" />
+          </div>
+          <div class="row">
+            <input name="t3_phoneme" placeholder="optional" />
+            <select name="t3_position"><option selected>initial</option><option>medial</option><option>final</option></select>
+            <input name="t3_reps" type="number" min="0" max="10" value="0" />
+          </div>
+          <div class="row">
+            <input name="t4_phoneme" placeholder="optional" />
+            <select name="t4_position"><option selected>initial</option><option>medial</option><option>final</option></select>
+            <input name="t4_reps" type="number" min="0" max="10" value="0" />
+          </div>
+          <div class="row">
+            <input name="t5_phoneme" placeholder="optional" />
+            <select name="t5_position"><option selected>initial</option><option>medial</option><option>final</option></select>
+            <input name="t5_reps" type="number" min="0" max="10" value="0" />
+          </div>
+        </div>
+        <div class="hint">Examples: /w/ initial, /k/ final, /m/ initial. Keep counts small so lines stay ≤6 words.</div>
+      </div>
+
+      <div class="box">
+        <div><strong>Lexicon (optional)</strong> <span class="subtle">(CSV upload)</span></div>
+  <input type="file" name="lexicon" accept=".csv" />
+  <div class="hint">Columns required: word, syllable_shape, initial_phonemes, medial_phonemes, final_phonemes.</div>
+</div>
+
+<div class="box">
+        <div><strong>Syllable Shapes</strong> <span class="subtle">(applies to target-line words)</span></div>
+        <div class="grid" style="grid-template-columns: repeat(7, 1fr);">
+          <label><input type="checkbox" name="shapes" value="V"> V</label>
+          <label><input type="checkbox" name="shapes" value="CV" checked> CV</label>
+          <label><input type="checkbox" name="shapes" value="VC"> VC</label>
+          <label><input type="checkbox" name="shapes" value="CVC" checked> CVC</label>
+          <label><input type="checkbox" name="shapes" value="CCVC"> CCVC</label>
+          <label><input type="checkbox" name="shapes" value="CVCC"> CVCC</label>
+          <label><input type="checkbox" name="shapes" value="CVCV"> CVCV</label>
+        </div>
+        <div class="hint">Tip: start with CV/CVC for early practice, then add CCVC/CVCC or multisyllabic (CVCV).</div>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button type="submit">Generate PDF</button>
+        <button type="submit" formaction="/preview">Preview &amp; Validate</button>
+      </div>
+    </form>
+    <p class="hint">Big-print text + page footnotes + theme placeholders. Icons map to the main target word per page (cookie, cup, sock, etc.).</p>
+  </body>
+</html>

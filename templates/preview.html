@@ -1,0 +1,95 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CAS Story — Preview & Validate</title>
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; max-width: 980px; margin: 32px auto; }
+      h1 { font-size: 26px; margin-bottom: 8px; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+      table { border-collapse: collapse; width: 100%; }
+      th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+      th { background: #f7f7f7; }
+      .ok { color: #0a7; font-weight: 700; }
+      .warn { color: #b60; font-weight: 700; }
+      .bad { color: #c22; font-weight: 700; }
+      .small { font-size: 12px; color: #555; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .btns { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+      .btn { padding: 10px 16px; border: 1px solid #ccc; border-radius: 6px; text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <h1>Preview & Validate</h1>
+    <div class="small">Title: <strong>{{ title }}</strong> &nbsp;•&nbsp; Pages: {{ pages }} &nbsp;•&nbsp; Mode: {{ mode }} &nbsp;•&nbsp; Theme: {{ theme }}</div>
+    <div class="small">Phrases: <span class="mono">{{ phrases|join(", ") }}</span></div>
+    <div class="small">Shapes: <span class="mono">{{ shapes|join(", ") }}</span></div>
+
+    <div class="grid" style="margin-top:18px;">
+      <div>
+        <h2>Checklist</h2>
+        <table>
+          <tr><th>Item</th><th>Status</th><th>Notes</th></tr>
+          {% for row in checklist %}
+          <tr>
+            <td>{{ row.item }}</td>
+            <td class="{{ row.status_class }}">{{ row.status_label }}</td>
+            <td>{{ row.notes }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+      <div>
+        <h2>Totals</h2>
+        <table>
+          <tr><th>Target</th><th>Count</th><th>Goal</th></tr>
+          {% for t in totals %}
+          <tr>
+            <td>{{ t.key }}</td>
+            <td>{{ t.count }}</td>
+            <td>{{ t.goal }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        <h2 style="margin-top:16px;">Phrase Counts</h2>
+        <table>
+          <tr><th>Phrase</th><th>Count</th></tr>
+          {% for p in phrase_counts %}
+          <tr><td>{{ p.phrase }}</td><td>{{ p.count }}</td></tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+
+    <h2 style="margin-top:18px;">Per-Page Coverage</h2>
+    <table>
+      <tr>
+        <th>Page</th>
+        {% for key in target_keys %}
+        <th>{{ key }}</th>
+        {% endfor %}
+        <th>Unknown words</th>
+      </tr>
+      {% for row in per_page %}
+      <tr>
+        <td>{{ row.page }}</td>
+        {% for key in target_keys %}
+        <td>{{ row.counts.get(key,0) }}</td>
+        {% endfor %}
+        <td class="small mono">{{ row.unknown|join(", ") }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <div class="btns">
+      <form method="POST" action="/generate">
+        {% for k,v in hidden_fields.items() %}
+          <input type="hidden" name="{{k}}" value="{{v}}"/>
+        {% endfor %}
+        <button class="btn" type="submit">Looks good — Generate PDF</button>
+      </form>
+      <a class="btn" href="/">Back</a>
+    </div>
+  </body>
+</html>

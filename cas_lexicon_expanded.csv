@@ -1,0 +1,14 @@
+word,phonemes,syllable_shape,initial_phonemes,medial_phonemes,final_phonemes
+we,w IY,CV,w,,IY
+walk,w AO k,CVCC,w,AO,k
+want,w AA n t,CVCC,w,AA n,t
+cookie,k UH k IY,CVCV,k,UH k,IY
+cookies,k UH k IY z,CVCVC,k,UH k IY,z
+pack,p AE k,CVC,p,AE,k
+pick,p IH k,CVC,p,IH,k
+cup,k AH p,CVC,k,AH,p
+sock,s AA k,CVC,s,AA,k
+I,AY,V,AY,,
+go,g OW,CV,g,,OW
+you,y UW,CV,y,,UW
+out,AW t,VC,AW,,t
